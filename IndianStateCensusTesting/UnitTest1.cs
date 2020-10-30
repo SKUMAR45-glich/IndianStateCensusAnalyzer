@@ -17,6 +17,7 @@ namespace IndianStateCensusTesting
         static string wrongIndianStateCensusFileType = @"C:\Users\saura\Desktop\Training\IndianStateCensusAnalyzer\IndianStateCensusAnalyzer\CSVFiles\IndiaStateCensusData.txt";
         
         CensusAnalyser censusAnalyser;
+        Dictionary<string, CensusDTO> totalRecord;
         Dictionary<string, CensusDTO> stateRecord;
 
         [SetUp]
@@ -24,6 +25,8 @@ namespace IndianStateCensusTesting
         {
             censusAnalyser = new CensusAnalyser();
             stateRecord = new Dictionary<string, CensusDTO>();
+            totalRecord = new Dictionary<string, CensusDTO>();
+
         }
 
         [Test]
@@ -35,15 +38,19 @@ namespace IndianStateCensusTesting
         [Test]
         public void GivenIndianCensusDataFile_WhenReaded_ShouldReturnCensusDataCount()
         {
+            totalRecord = censusAnalyser.LoadCensusData(indianStateCensusFilePath, Country.INDIA, indianStateCensusHeaders);
             stateRecord = censusAnalyser.LoadCensusData(indianStateCensusFilePath, Country.INDIA, indianStateCensusHeaders);
             Assert.AreEqual(29, stateRecord.Count);
+            Assert.AreEqual(37, totalRecord.Count);
         }
 
         [Test]
         public void GivenWrongIndianCensusDataFile_WhenReaded_ShouldReturnCustomException()
         {
+
             var censusException = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(wrongIndianStateCensusFilePath, Country.INDIA, indianStateCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, censusException.eType);
+            
         }
 
         [Test]
