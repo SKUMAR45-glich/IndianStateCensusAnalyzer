@@ -46,5 +46,11 @@ namespace IndianStateCensusTesting
             Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, censusException.eType);
         }
 
+        [Test]
+        public void GivenWrongFileTypeIndianCensusDataFile_WhenReaded_ShouldReturnCustomException()
+        {
+            var censusException = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(wrongIndianStateCensusFileType, Country.INDIA, indianStateCensusHeaders));
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE, censusException.eType);
+        }
     }
 }
